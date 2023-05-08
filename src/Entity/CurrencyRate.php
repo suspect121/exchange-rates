@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Copyright © 2023 Mateusz Paluszek
+ */
+
 namespace App\Entity;
 
 use App\Repository\CurrencyRateRepository;

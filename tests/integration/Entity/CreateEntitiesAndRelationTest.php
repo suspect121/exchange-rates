@@ -2,9 +2,6 @@
 
 /*
  * Copyright © 2023 Mateusz Paluszek
- * Wszelkie prawa zastrzeżone
- *
- * Wykorzystywanie projektu lub jakiejkolwiek jego części bez zgody autora jest zabronione
  */
 
 /** @noinspection PhpUnhandledExceptionInspection */
