@@ -13,8 +13,8 @@ Exchange Rates jest projektem, oferującym tabelę kursów najważniejszych walu
 - Minimalizacja ilości zapytań do bazy danych
 - Minimalizacja ilości żądań do API NBP
 - Walidacja danych wprowadzonych przez użytkownika
-- Walidacja danych które zostały uzyskane z API NBP
+- Walidacja danych, które zostały uzyskane z API NBP
 - Podział gromadzonych danych na dwie tabele
-  - currency - tabela przechowująca symbole i pełne nazwy walut
+  - currency - tabela przechowująca kody i pełne nazwy walut
   - currency_rate - tabela przechowująca kursy walut wraz z datą ich opublikowania
-- Wykorzystanie UUID jako klucza podstawowego tabeli currency
+- Wykorzystanie UUID jako klucza podstawowego tabel
