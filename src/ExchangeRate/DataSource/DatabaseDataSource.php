@@ -6,6 +6,7 @@
 
 namespace App\ExchangeRate\DataSource;
 
+use App\Repository\CurrencyRateRepository;
 use DateTimeImmutable;
 
 /**
@@ -17,6 +18,11 @@ use DateTimeImmutable;
  */
 class DatabaseDataSource implements DataSourceInterface
 {
+    public function __construct(CurrencyRateRepository $currency_rate_repository)
+    {
+
+    }
+
     /**
      * @inheritDoc
      */

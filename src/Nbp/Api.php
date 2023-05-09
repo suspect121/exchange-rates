@@ -6,8 +6,6 @@
 
 namespace App\Nbp;
 
-use App\Nbp\Validator\ExchangeRatesTableValidator;
-
 /**
  * Realizuje komunikację z API NBP
  *
@@ -17,7 +15,7 @@ use App\Nbp\Validator\ExchangeRatesTableValidator;
  */
 class Api
 {
-    public function __construct(ExchangeRatesTableValidator $exchange_rate_table_validator)
+    public function __construct(ApiResponseValidate $api_response_validate)
     {
 
     }
