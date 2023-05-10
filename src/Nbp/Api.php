@@ -6,6 +6,8 @@
 
 namespace App\Nbp;
 
+use App\Nbp\Request\ApiRequestInterface;
+
 /**
  * Realizuje komunikację z API NBP
  *
@@ -23,9 +25,9 @@ class Api
     /**
      * Wykonuje wcześniej przygotowane żądanie
      *
-     * @param ApiRequest $api_request
+     * @param ApiRequestInterface $api_request
      */
-    public function execute(ApiRequest $api_request): void
+    public function execute(ApiRequestInterface $api_request): void
     {
 
     }
