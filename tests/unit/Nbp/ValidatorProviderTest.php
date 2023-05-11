@@ -33,7 +33,6 @@ class ValidatorProviderTest extends TestCase
      */
     public function testExchangeRatesTableRequest(): void
     {
-        $this->expectNotToPerformAssertions();
         $request = $this->getMockApiRequestWithGetNameMethod('exchange_rates_table');
         $validator_provider = $this->getValidatorProvider();
         $validator_provider->getValidator($request);
