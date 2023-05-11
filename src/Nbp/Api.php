@@ -17,7 +17,7 @@ use App\Nbp\Request\ApiRequestInterface;
  */
 class Api
 {
-    public function __construct(ApiResponseValidate $api_response_validate)
+    public function __construct(ValidatorProvider $validator_provider)
     {
 
     }
@@ -34,6 +34,8 @@ class Api
 
     /**
      * Zwraca odpowiedź z serwera HTTP
+     *
+     * Przed zwróceniem odpowiedzi, następuje jej walidacja.
      *
      * @return ApiResponse
      */

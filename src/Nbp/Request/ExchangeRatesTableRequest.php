@@ -52,6 +52,14 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
     /**
      * @inheritDoc
      */
+    public function getName(): string
+    {
+        return 'exchange_rates_table';
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getUrl(): string
     {
         $this->checkSetTable();

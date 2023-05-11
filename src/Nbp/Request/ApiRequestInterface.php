@@ -18,6 +18,13 @@ use App\Nbp\Exception\IncompleteRequestException;
 interface ApiRequestInterface
 {
     /**
+     * Zwraca nazwę żądania ustaloną na potrzeby wewnętrzne
+     *
+     * @return string
+     */
+    public function getName(): string;
+
+    /**
      * Zwraca w pełni przygotowany adres URL żądania do API NBP
      *
      * @return string
