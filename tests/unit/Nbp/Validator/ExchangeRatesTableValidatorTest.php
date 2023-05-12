@@ -136,8 +136,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
      */
     private function getExampleData(): array
     {
-        if(isset(self::$example_data))
-        {
+        if(isset(self::$example_data)) {
             return self::$example_data;
         }
         $content = file_get_contents(__DIR__.'/../../../data/exchange_rates_table.json');

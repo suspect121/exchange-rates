@@ -32,8 +32,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
      */
     public function setTable(string $table): void
     {
-        if(!preg_match('/^[a-cA-C]$/', $table))
-        {
+        if(!preg_match('/^[a-cA-C]$/', $table)) {
             throw new BadArgumentException('Nieprawidłowa tabela kursów walut');
         }
         $this->table = strtolower($table);
@@ -67,8 +66,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
         $date_param = $this->date
             ->format('Y-m-d');
         $today_date = date('Y-m-d');
-        if($date_param === $today_date)
-        {
+        if($date_param === $today_date) {
             $date_param = 'today';
         }
         return 'https://api.nbp.pl/api/exchangerates/tables/'.$this->table.'/'.$date_param.'/';
@@ -79,8 +77,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
      */
     private function checkSetTable()
     {
-        if(!isset($this->table))
-        {
+        if(!isset($this->table)) {
             throw new IncompleteRequestException('Nie przekazano tabeli której mają dotyczyć zwracane kursy walut');
         }
     }
@@ -90,8 +87,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
      */
     private function checkSetDate()
     {
-        if(!isset($this->date))
-        {
+        if(!isset($this->date)) {
             throw new IncompleteRequestException('Nie przekazano daty której mają dotyczyć zwracane kursy walut');
         }
     }

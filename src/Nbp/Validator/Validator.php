@@ -31,8 +31,7 @@ abstract class Validator
     {
         $data_keys = array_keys($data);
         $this->checkDataHasAllowedKeys($data_keys, $allowed_keys);
-        if($required_keys !== [])
-        {
+        if($required_keys !== []) {
             $this->checkDataHasRequiredKeys($data_keys, $required_keys);
         }
     }
@@ -47,10 +46,8 @@ abstract class Validator
     private function checkDataHasAllowedKeys(array $data_keys, array $allowed_keys): void
     {
         $diff_allowed_keys = array_diff($data_keys, $allowed_keys);
-        if($diff_allowed_keys !== [])
-        {
-            if(count($diff_allowed_keys) > 1)
-            {
+        if($diff_allowed_keys !== []) {
+            if(count($diff_allowed_keys) > 1) {
                 $message = 'Odpowiedź z API zawiera niedozwolone klucze: '.implode(' ', $diff_allowed_keys);
             } else {
                 $message = 'Odpowiedź z API zawiera niedozwolony klucz "'.current($diff_allowed_keys).'"';
@@ -69,10 +66,8 @@ abstract class Validator
     private function checkDataHasRequiredKeys(array $data_keys, array $required_keys): void
     {
         $diff_required_keys = array_diff($required_keys, $data_keys);
-        if($diff_required_keys !== [])
-        {
-            if(count($diff_required_keys) > 1)
-            {
+        if($diff_required_keys !== []) {
+            if(count($diff_required_keys) > 1) {
                 $message = 'Odpowiedź z API nie zawiera wymaganych kluczy: '.implode(' ', $diff_required_keys);
             } else {
                 $message = 'Odpowiedź z API nie zawiera wymaganego klucza "'.current($diff_required_keys).'"';
@@ -97,17 +92,14 @@ abstract class Validator
      */
     protected function checkDataContent(array $data, array $expected_properties): void
     {
-        foreach($data as $key => $value)
-        {
+        foreach($data as $key => $value) {
             $expected = $expected_properties[$key];
             $value_type = gettype($value);
-            if($expected['type'] !== $value_type)
-            {
+            if($expected['type'] !== $value_type) {
                 $message = 'Odpowiedź z API zawiera nieprawidłowy typ danych dla klucza "'.$key.'": '.$value_type;
                 throw new ValidateException($message);
             }
-            if(isset($expected['pattern']) && $value_type === 'string' && !preg_match($expected['pattern'], $value))
-            {
+            if(isset($expected['pattern']) && $value_type === 'string' && !preg_match($expected['pattern'], $value)) {
                 $message = 'Odpowiedź z API zawiera nieprawidłowe dane dla klucza "'.$key.'": '.$value;
                 throw new ValidateException($message);
             }

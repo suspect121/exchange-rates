@@ -58,8 +58,7 @@ class ExchangeRatesTableValidator extends Validator implements ValidatorInterfac
      */
     private function checkRatesData(array $response): void
     {
-        foreach($response['rates'] as $data)
-        {
+        foreach($response['rates'] as $data) {
             $allowed_keys = ['currency', 'code', 'mid'];
             $required_keys = $allowed_keys;
             $expected_properties = [
