@@ -6,7 +6,7 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace App\tests\integration\Nbp;
+namespace App\Tests\Integration\Nbp;
 
 use App\Nbp\Api;
 use App\Nbp\Exception\ResponseException;
@@ -23,7 +23,7 @@ use DateTimeImmutable;
  *
  * @author Mateusz Paluszek <bok@servhost.pl>
  * @copyright 2023 Mateusz Paluszek
- * @package App\tests\integration\Nbp
+ * @package App\Tests\Integration\Nbp
  */
 class ApiFullTest extends KernelTestCase
 {
@@ -32,7 +32,7 @@ class ApiFullTest extends KernelTestCase
         self::bootKernel();
     }
 
-    public function testCorrectGetExchangeRatesFromTableWithDate()
+    public function testCorrectGetExchangeRatesFromTableWithDate(): void
     {
         /* Przygotowanie imitacji odpowiedzi z serwera HTTP */
         $expected_url = 'https://api.nbp.pl/api/exchangerates/tables/a/2023-04-18/';
@@ -52,7 +52,7 @@ class ApiFullTest extends KernelTestCase
         $this->assertSame(['table', 'no', 'effectiveDate', 'rates'], array_keys($response_array));
     }
 
-    public function testWithBadRequestResponse()
+    public function testWithBadRequestResponse(): void
     {
         $this->expectException(ResponseException::class);
         $this->expectExceptionMessage('Nie można uzyskać treści odpowiedzi ponieważ serwer HTTP zwrócił kod błędu 400');
@@ -72,7 +72,7 @@ class ApiFullTest extends KernelTestCase
         $response->getResponseArray();
     }
 
-    public function testWithBadResponseBody()
+    public function testWithBadResponseBody(): void
     {
         $this->expectException(ResponseException::class);
         $this->expectExceptionMessage('Przetworzenie odpowiedzi z API NBP nie powiodło się');
@@ -92,7 +92,7 @@ class ApiFullTest extends KernelTestCase
         $response->getResponseArray();
     }
 
-    public function testValidationResponse()
+    public function testValidationResponse(): void
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API nie zawiera wymaganego klucza "rates"');
@@ -116,7 +116,7 @@ class ApiFullTest extends KernelTestCase
      * @param int $http_code Kod HTTP który ma zostać zwrócony w odpowiedzi
      * @param string $body Treść która ma zostać zwrócona w odpowiedzi
      */
-    private function createMockHttpClientAndLoadToContainer(string $expected_url, int $http_code, string $body)
+    private function createMockHttpClientAndLoadToContainer(string $expected_url, int $http_code, string $body): void
     {
         $expected_requests = [
             function ($method, $url) use ($expected_url, $http_code, $body) {

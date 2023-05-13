@@ -7,7 +7,7 @@
 /** @noinspection PhpUnhandledExceptionInspection */
 /** @noinspection PhpDocMissingThrowsInspection */
 
-namespace App\tests\integration\ExchangeRate;
+namespace App\Tests\Integration\ExchangeRate;
 
 use App\DataFixtures\BasicFixtures;
 use App\Entity\Currency;

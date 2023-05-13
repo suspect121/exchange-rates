@@ -6,7 +6,7 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace App\tests\integration\Repository;
+namespace App\Tests\Integration\Repository;
 
 use App\DataFixtures\BasicFixtures;
 use App\Repository\CurrencyRateRepository;

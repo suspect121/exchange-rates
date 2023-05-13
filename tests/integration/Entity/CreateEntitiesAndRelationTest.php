@@ -6,7 +6,7 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace App\tests\integration\Entity;
+namespace App\Tests\Integration\Entity;
 
 use App\Entity\Currency;
 use App\Entity\CurrencyRate;
@@ -38,7 +38,7 @@ class CreateEntitiesAndRelationTest extends KernelTestCase
             ->getManager();
     }
 
-    public function testCreateAndSaveEntities()
+    public function testCreateAndSaveEntities(): void
     {
         $this->expectNotToPerformAssertions();
 
@@ -58,7 +58,7 @@ class CreateEntitiesAndRelationTest extends KernelTestCase
     /**
      * @depends testCreateAndSaveEntities
      */
-    public function testCurrencyRateToCurrencyRelation()
+    public function testCurrencyRateToCurrencyRelation(): void
     {
         $currency_rate_repository = static::getContainer()
             ->get(CurrencyRateRepository::class);
