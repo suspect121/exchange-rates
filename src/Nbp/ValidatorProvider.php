@@ -34,7 +34,7 @@ class ValidatorProvider
     public function getValidator(ApiRequestInterface $api_request): ValidatorInterface
     {
         $request_name = $api_request->getName();
-        if(!isset($this->validators[$request_name])) {
+        if (!isset($this->validators[$request_name])) {
             throw new ValidateException('Nie można uzyskać odpowiedniego walidatora odpowiedzi');
         }
         return $this->validators[$request_name];

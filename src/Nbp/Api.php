@@ -80,7 +80,7 @@ class Api
         try {
             $status = $this->response
                 ->getStatusCode();
-            if($status === 200) {
+            if ($status === 200) {
                 $body = $this->response
                     ->getContent();
             }
@@ -99,7 +99,7 @@ class Api
      */
     private function validateApiResponse(int $http_status, ApiResponse $api_response): void
     {
-        if($http_status === 200) {
+        if ($http_status === 200) {
             $validator = $this->validator_provider
                 ->getValidator($this->api_request);
             $validator->validate($api_response);

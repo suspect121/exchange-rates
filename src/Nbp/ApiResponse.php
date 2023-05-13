@@ -54,16 +54,16 @@ class ApiResponse
      */
     public function getResponseArray(): array
     {
-        if($this->status !== 200) {
+        if ($this->status !== 200) {
             $message = 'Nie można uzyskać treści odpowiedzi ponieważ serwer HTTP zwrócił kod błędu '.$this->status;
             throw new ResponseException($message);
         }
         $response_array = json_decode($this->response_body, true);
-        if(!is_array($response_array)) {
+        if (!is_array($response_array)) {
             throw new ResponseException('Przetworzenie odpowiedzi z API NBP nie powiodło się');
         }
         /* Zwracanie danych niższego poziomu, jeżeli jedyny istniejący klucz najwyższego poziomu to "0" */
-        if(count($response_array) === 1 && isset($response_array[0])) {
+        if (count($response_array) === 1 && isset($response_array[0])) {
             return $response_array[0];
         }
         return $response_array;

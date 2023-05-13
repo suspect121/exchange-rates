@@ -66,15 +66,15 @@ class BasicFixtures extends Fixture
         /* Tworzenie encji Currency */
         $currencies = [];
         $first_date = array_key_first($data);
-        foreach($data[$first_date] as $value) {
+        foreach ($data[$first_date] as $value) {
             $currency = new Currency($value['code'], $value['name']);
             $currencies[$value['code']] = $currency;
             $manager->persist($currency);
         }
 
         /* Tworzenie encji CurrencyRate */
-        foreach($data as $date => $child_data) {
-            foreach($child_data as $value) {
+        foreach ($data as $date => $child_data) {
+            foreach ($child_data as $value) {
                 $currency = $currencies[$value['code']];
                 $currency_rate = new CurrencyRate($currency, $value['exchange_rate'], new DateTimeImmutable($date));
                 $manager->persist($currency_rate);
