@@ -13,7 +13,7 @@ namespace App\Nbp\Exception;
  * @copyright 2023 Mateusz Paluszek
  * @package App\Nbp\Exception
  */
-class ResponseException extends \Exception
+class ResponseException extends ApiException
 {
     public function __construct(string $message = "", int $code = 0, ?\Throwable $previous = null)
     {

@@ -13,7 +13,7 @@ namespace App\Nbp\Exception;
  * @copyright 2023 Mateusz Paluszek
  * @package App\Nbp\Exception
  */
-class IncompleteRequestException extends \Exception
+class IncompleteRequestException extends ApiException
 {
     public function __construct(string $message = "", int $code = 0, ?\Throwable $previous = null)
     {

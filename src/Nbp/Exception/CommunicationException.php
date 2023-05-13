@@ -7,16 +7,13 @@
 namespace App\Nbp\Exception;
 
 /**
- * Wyjątek reprezentujący ogólny błąd związany z wykorzystaniem API
- *
- * Niniejsza wyjątek powinien być rozszerzany przez wszystkie pozostałe wyjątki związane z wykorzystaniem API NBP.
- * Ma na celu ułatwienie przechwytywania wyjątków związanych z wykorzystaniem API NBP.
+ * Wyjątek reprezentujący ogólny błąd w komunikacji z API NBP
  *
  * @author Mateusz Paluszek <bok@servhost.pl>
  * @copyright 2023 Mateusz Paluszek
  * @package App\Nbp\Exception
  */
-class ApiException extends \Exception
+class CommunicationException extends ApiException
 {
     public function __construct(string $message = "", int $code = 0, ?\Throwable $previous = null)
     {

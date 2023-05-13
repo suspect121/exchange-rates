@@ -7,6 +7,7 @@
 namespace App\Nbp;
 
 use App\Nbp\Exception\ApiException;
+use App\Nbp\Exception\CommunicationException;
 use App\Nbp\Exception\IncompleteRequestException;
 use App\Nbp\Exception\ValidateException;
 use App\Nbp\Request\ApiRequestInterface;
@@ -36,7 +37,7 @@ class Api
      * Wykonuje wcześniej przygotowane żądanie
      *
      * @param ApiRequestInterface $api_request
-     * @throws ApiException
+     * @throws CommunicationException
      * @throws IncompleteRequestException
      */
     public function execute(ApiRequestInterface $api_request): void
@@ -47,7 +48,8 @@ class Api
             $this->response = $this->http_client
                 ->request('GET', $url);
         } catch (TransportExceptionInterface $exception) {
-            throw new ApiException('Wystąpił błąd podczas wykonywania żądania do API NBP - '.$exception->getMessage());
+            $message = 'Wystąpił błąd podczas wykonywania żądania do API NBP - '.$exception->getMessage();
+            throw new CommunicationException($message);
         }
     }
 
@@ -85,7 +87,8 @@ class Api
                     ->getContent();
             }
         } catch (HttpExceptionInterface|TransportExceptionInterface $exception) {
-            throw new ApiException('Wystąpił błąd podczas uzyskiwania odpowiedzi z API NBP - '.$exception->getMessage());
+            $message = 'Wystąpił błąd podczas uzyskiwania odpowiedzi z API NBP - '.$exception->getMessage();
+            throw new CommunicationException($message);
         }
         return ['status' => $status, 'body' => $body];
     }
