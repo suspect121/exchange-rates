@@ -8,26 +8,26 @@
 
 namespace App\Tests\Integration\Repository;
 
-use App\DataFixtures\BasicFixtures;
 use App\Repository\CurrencyRateRepository;
+use App\Tests\Support\ClearDatabaseTrait;
+use App\Tests\Support\EntityManagerTrait;
+use App\Tests\Support\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use DateTimeImmutable;
 
 class CurrencyRateRepositoryTest extends KernelTestCase
 {
-    public static function setUpBeforeClass(): void
+    use ClearDatabaseTrait;
+    use EntityManagerTrait;
+    use FixturesTrait;
+
+    protected function setUp(): void
     {
         self::bootKernel();
-        $entity_manager = static::getContainer()
-            ->get('doctrine')
-            ->getManager();
         /* Czyszczenie tabel przed rozpoczęciem testów */
-        $connection = $entity_manager->getConnection();
-        $connection->executeStatement('DELETE FROM currency_rate');
-        $connection->executeStatement('DELETE FROM currency');
+        $this->clearDatabase();
         /* Ładowanie przykładowych danych */
-        $basic_fixtures = new BasicFixtures();
-        $basic_fixtures->load($entity_manager);
+        $this->loadBasicFixtures();
     }
 
     public function testFindByDateAndLoadRelation(): void

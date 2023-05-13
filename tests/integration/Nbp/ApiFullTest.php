@@ -12,10 +12,9 @@ use App\Nbp\Api;
 use App\Nbp\Exception\ResponseException;
 use App\Nbp\Exception\ValidateException;
 use App\Nbp\Request\ExchangeRatesTableRequest;
+use App\Tests\Support\MockHttpClientTrait;
+use App\Tests\Support\NbpExampleDataTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Symfony\Component\HttpClient\MockHttpClient;
-use Symfony\Component\HttpClient\Response\MockResponse;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 use DateTimeImmutable;
 
 /**
@@ -27,6 +26,9 @@ use DateTimeImmutable;
  */
 class ApiFullTest extends KernelTestCase
 {
+    use MockHttpClientTrait;
+    use NbpExampleDataTrait;
+
     protected function setUp(): void
     {
         self::bootKernel();
@@ -36,7 +38,7 @@ class ApiFullTest extends KernelTestCase
     {
         /* Przygotowanie imitacji odpowiedzi z serwera HTTP */
         $expected_url = 'https://api.nbp.pl/api/exchangerates/tables/a/2023-04-18/';
-        $body = $this->getExampleData();
+        $body = $this->getExampleExchangeRatesTable();
         $this->createMockHttpClientAndLoadToContainer($expected_url, 200, $body);
         /* Wykonywanie żądania i uzyskiwanie odpowiedzi */
         $request = new ExchangeRatesTableRequest();
@@ -110,27 +112,6 @@ class ApiFullTest extends KernelTestCase
     }
 
     /**
-     * Przygotowuje imitację HttpClient a następnie ładuje ją do kontenera zależności
-     *
-     * @param string $expected_url Spodziewany adres URL żądania
-     * @param int $http_code Kod HTTP który ma zostać zwrócony w odpowiedzi
-     * @param string $body Treść która ma zostać zwrócona w odpowiedzi
-     */
-    private function createMockHttpClientAndLoadToContainer(string $expected_url, int $http_code, string $body): void
-    {
-        $expected_requests = [
-            function ($method, $url) use ($expected_url, $http_code, $body) {
-                $this->assertSame('GET', $method);
-                $this->assertSame($expected_url, $url);
-                return new MockResponse($body, ['http_code' => $http_code]);
-            }
-        ];
-        $http_client = new MockHttpClient($expected_requests);
-        static::getContainer()
-            ->set(HttpClientInterface::class, $http_client);
-    }
-
-    /**
      * Zwraca instancję Api z kontenera zależności
      *
      * @noinspection PhpIncompatibleReturnTypeInspection
@@ -139,15 +120,5 @@ class ApiFullTest extends KernelTestCase
     {
         $container = static::getContainer();
         return $container->get(Api::class);
-    }
-
-    /**
-     * Zwraca przykładowe dane wcześniej przygotowane w pliku exchange_rates_table.json
-     *
-     * @return string
-     */
-    private function getExampleData(): string
-    {
-        return file_get_contents(__DIR__.'/../../data/exchange_rates_table.json');
     }
 }

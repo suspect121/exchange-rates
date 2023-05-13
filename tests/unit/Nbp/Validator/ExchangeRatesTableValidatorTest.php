@@ -11,18 +11,19 @@ namespace App\Tests\Unit\Nbp\Validator;
 use App\Nbp\ApiResponse;
 use App\Nbp\Exception\ValidateException;
 use App\Nbp\Validator\ExchangeRatesTableValidator;
+use App\Tests\Support\NbpExampleDataTrait;
 use PHPUnit\Framework\TestCase;
 
 class ExchangeRatesTableValidatorTest extends TestCase
 {
-    private static array $example_data;
+    use NbpExampleDataTrait;
 
     /**
      * Test z prawidłowymi danymi
      */
     public function testValidateCorrectData(): void
     {
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
         $validator->validate($response);
@@ -35,7 +36,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API zawiera niedozwolony klucz "test"');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $data['test'] = 'BAD KEY';
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -49,7 +50,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API nie zawiera wymaganego klucza "rates"');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         unset($data['rates']);
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -63,7 +64,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API zawiera nieprawidłowe dane dla klucza "effectiveDate": BAD DATE');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $data['effectiveDate'] = 'BAD DATE';
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -77,7 +78,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API zawiera niedozwolony klucz "test"');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $data['rates'][5]['test'] = 'BAD KEY';
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -91,7 +92,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API nie zawiera wymaganego klucza "mid"');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         unset($data['rates'][7]['mid']);
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -105,7 +106,7 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API zawiera nieprawidłowy typ danych dla klucza "mid": string');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $data['rates'][10]['mid'] = 'BAD DATA';
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
@@ -119,29 +120,11 @@ class ExchangeRatesTableValidatorTest extends TestCase
     {
         $this->expectException(ValidateException::class);
         $this->expectExceptionMessage('Odpowiedź z API zawiera nieprawidłowe dane dla klucza "code": BAD CODE');
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTableAsArray();
         $data['rates'][6]['code'] = 'BAD CODE';
         $response = $this->getResponseMock($data);
         $validator = new ExchangeRatesTableValidator();
         $validator->validate($response);
-    }
-
-    /**
-     * Zwraca przykładowe dane wcześniej przygotowane w pliku exchange_rates_table.json
-     *
-     * Dane zwracane są z wykorzystaniem lokalnego mechanizmu cache. Plik z danymi jest odczytywany i przetwarzany
-     * jedynie raz dla wszystkich testów.
-     *
-     * @return array
-     */
-    private function getExampleData(): array
-    {
-        if (isset(self::$example_data)) {
-            return self::$example_data;
-        }
-        $content = file_get_contents(__DIR__.'/../../../data/exchange_rates_table.json');
-        self::$example_data = json_decode($content, true)[0];
-        return self::$example_data;
     }
 
     /**

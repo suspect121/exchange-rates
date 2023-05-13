@@ -16,12 +16,15 @@ use App\ExchangeRate\Exception\TodayNoDataException;
 use App\Nbp\Api;
 use App\Nbp\ApiResponse;
 use App\Nbp\Request\ExchangeRatesTableRequest;
+use App\Tests\Support\NbpExampleDataTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use DateTimeImmutable;
 
 class NbpApiDataSourceTest extends TestCase
 {
+    use NbpExampleDataTrait;
+
     /**
      * Test mający na celu dokładne prześledzenie zachowania klasy podczas użycia metody getData
      */
@@ -37,7 +40,7 @@ class NbpApiDataSourceTest extends TestCase
             ->with('A');
 
         /* Przygotowanie imitacji ApiResponse z przykładowymi danymi */
-        $example_data = $this->getExampleData();
+        $example_data = $this->getExampleExchangeRatesTableAsArray();
         $response_mock = $this->getResponseMockWithStatus(200);
         $response_mock->expects($this->once())
             ->method('getResponseArray')
@@ -139,17 +142,6 @@ class NbpApiDataSourceTest extends TestCase
         /* Tworzenie instancji NbpApiDataSource z imitacjami */
         $data_source = new NbpApiDataSource($api_mock, $request_mock, $creator_mock);
         $data_source->getData();
-    }
-
-    /**
-     * Zwraca przykładowe dane wcześniej przygotowane w pliku exchange_rates_table.json
-     *
-     * @return array
-     */
-    private function getExampleData(): array
-    {
-        $content = file_get_contents(__DIR__.'/../../../data/exchange_rates_table.json');
-        return json_decode($content, true)[0];
     }
 
     /**

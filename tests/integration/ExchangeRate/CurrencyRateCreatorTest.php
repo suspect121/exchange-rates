@@ -9,29 +9,26 @@
 
 namespace App\Tests\Integration\ExchangeRate;
 
-use App\DataFixtures\BasicFixtures;
-use App\Entity\Currency;
-use App\Entity\CurrencyRate;
 use App\ExchangeRate\CurrencyRateCreator;
-use Doctrine\ORM\EntityManager;
+use App\Tests\Support\ClearDatabaseTrait;
+use App\Tests\Support\EntityCountTrait;
+use App\Tests\Support\EntityManagerTrait;
+use App\Tests\Support\FixturesTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use DateTimeImmutable;
 
 class CurrencyRateCreatorTest extends KernelTestCase
 {
-    private EntityManager $entity_manager;
+    use ClearDatabaseTrait;
+    use EntityCountTrait;
+    use EntityManagerTrait;
+    use FixturesTrait;
 
     protected function setUp(): void
     {
         self::bootKernel();
-        $this->entity_manager = static::getContainer()
-            ->get('doctrine')
-            ->getManager();
-        $connection = $this->entity_manager
-            ->getConnection();
         /* Czyszczenie tabel przed rozpoczęciem testów */
-        $connection->executeStatement('DELETE FROM currency_rate');
-        $connection->executeStatement('DELETE FROM currency');
+        $this->clearDatabase();
     }
 
     /**
@@ -118,7 +115,7 @@ class CurrencyRateCreatorTest extends KernelTestCase
     public function testCreateAndSaveManyExchangeRatesForExistCurrencies(): void
     {
         /* Ładowanie do bazy przykładowych danych i weryfikacja ich ilości */
-        $this->loadExampleData();
+        $this->loadBasicFixtures();
         $this->assertSame(4, $this->getCurrencyCount());
         $this->assertSame(8, $this->getCurrencyRateCount());
 
@@ -141,7 +138,6 @@ class CurrencyRateCreatorTest extends KernelTestCase
         $this->assertSame(14, $this->getCurrencyRateCount());
     }
 
-
     /**
      * Zwraca instancję CurrencyRateCreator z kontenera zależności
      *
@@ -151,38 +147,5 @@ class CurrencyRateCreatorTest extends KernelTestCase
     {
         return self::getContainer()
             ->get(CurrencyRateCreator::class);
-    }
-
-    /**
-     * Zwraca liczbę rekordów z tabeli której dotyczy encja Currency
-     *
-     * @return int
-     */
-    private function getCurrencyCount(): int
-    {
-        return $this->entity_manager
-            ->getRepository(Currency::class)
-            ->count([]);
-    }
-
-    /**
-     * Zwraca liczbę rekordów z tabeli której dotyczy encja CurrencyRate
-     *
-     * @return int
-     */
-    private function getCurrencyRateCount(): int
-    {
-        return $this->entity_manager
-            ->getRepository(CurrencyRate::class)
-            ->count([]);
-    }
-
-    /**
-     * Ładuje do bazy przykładowe dane
-     */
-    private function loadExampleData(): void
-    {
-        $basic_fixtures = new BasicFixtures();
-        $basic_fixtures->load($this->entity_manager);
     }
 }

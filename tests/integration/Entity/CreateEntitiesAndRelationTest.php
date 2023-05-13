@@ -11,31 +11,26 @@ namespace App\Tests\Integration\Entity;
 use App\Entity\Currency;
 use App\Entity\CurrencyRate;
 use App\Repository\CurrencyRateRepository;
-use Doctrine\ORM\EntityManager;
+use App\Tests\Support\ClearDatabaseTrait;
+use App\Tests\Support\EntityManagerTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use DateTimeImmutable;
 
 class CreateEntitiesAndRelationTest extends KernelTestCase
 {
-    private EntityManager $entity_manager;
+    use ClearDatabaseTrait;
+    use EntityManagerTrait;
 
-    public static function setUpBeforeClass(): void
-    {
-        self::bootKernel();
-        $connection = static::getContainer()
-            ->get('doctrine')
-            ->getManager()
-            ->getConnection();
-        /* Czyszczenie tabel przed rozpoczęciem testów */
-        $connection->executeStatement('DELETE FROM currency_rate');
-        $connection->executeStatement('DELETE FROM currency');
-    }
+    private static bool $cleared_database = false;
 
     protected function setUp(): void
     {
-        $this->entity_manager = $this->getContainer()
-            ->get('doctrine')
-            ->getManager();
+        self::bootKernel();
+        /* Jednorazowe czyszczenie tabel przed rozpoczęciem wszystkich testów */
+        if (!self::$cleared_database) {
+            $this->clearDatabase();
+            self::$cleared_database = true;
+        }
     }
 
     public function testCreateAndSaveEntities(): void
@@ -49,7 +44,7 @@ class CreateEntitiesAndRelationTest extends KernelTestCase
         $currency_rate = new CurrencyRate($currency, 1.25, $date);
 
         /* Zapis utworzonych encji w bazie danych */
-        $em = $this->entity_manager;
+        $em = $this->getEntityManager();
         $em->persist($currency);
         $em->persist($currency_rate);
         $em->flush();

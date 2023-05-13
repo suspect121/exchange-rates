@@ -10,13 +10,16 @@ namespace App\Tests\Unit\Nbp;
 
 use App\Nbp\ApiResponse;
 use App\Nbp\Exception\ResponseException;
+use App\Tests\Support\NbpExampleDataTrait;
 use PHPUnit\Framework\TestCase;
 
 class ApiResponseTest extends TestCase
 {
+    use NbpExampleDataTrait;
+
     public function testWithCorrectResponse(): void
     {
-        $data = $this->getExampleData();
+        $data = $this->getExampleExchangeRatesTable();
         $response = new ApiResponse(200, $data);
         $this->assertTrue($response->isSuccess());
         $this->assertSame(200, $response->getStatus());
@@ -43,15 +46,5 @@ class ApiResponseTest extends TestCase
         $this->assertTrue($response->isSuccess());
         $this->assertSame(200, $response->getStatus());
         $response->getResponseArray();
-    }
-
-    /**
-     * Zwraca przykładowe dane wcześniej przygotowane w pliku exchange_rates_table.json
-     *
-     * @return string
-     */
-    private function getExampleData(): string
-    {
-        return file_get_contents(__DIR__.'/../../data/exchange_rates_table.json');
     }
 }
