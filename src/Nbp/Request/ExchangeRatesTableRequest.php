@@ -75,7 +75,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
     /**
      * @throws IncompleteRequestException
      */
-    private function checkSetTable()
+    private function checkSetTable(): void
     {
         if(!isset($this->table)) {
             throw new IncompleteRequestException('Nie przekazano tabeli której mają dotyczyć zwracane kursy walut');
@@ -85,7 +85,7 @@ class ExchangeRatesTableRequest implements ApiRequestInterface
     /**
      * @throws IncompleteRequestException
      */
-    private function checkSetDate()
+    private function checkSetDate(): void
     {
         if(!isset($this->date)) {
             throw new IncompleteRequestException('Nie przekazano daty której mają dotyczyć zwracane kursy walut');
