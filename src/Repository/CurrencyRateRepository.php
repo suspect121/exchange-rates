@@ -30,14 +30,6 @@ class CurrencyRateRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(CurrencyRate $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
-
     /**
      * Wyszukuje kursy walut na podstawie daty ich opublikowania i ładuje relację do tabeli currency
      *
