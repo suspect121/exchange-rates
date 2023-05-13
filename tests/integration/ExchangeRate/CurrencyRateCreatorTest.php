@@ -154,12 +154,6 @@ class CurrencyRateCreatorTest extends KernelTestCase
     }
 
     /**
-     * Zwraca liczbę rekordów z tabeli "currency"
-     *
-     * @return int
-     */
-
-    /**
      * Zwraca liczbę rekordów z tabeli której dotyczy encja Currency
      *
      * @return int

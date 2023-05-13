@@ -12,7 +12,7 @@ use App\ExchangeRate\DataSource\NbpApiDataSource;
 use DateTimeImmutable;
 
 /**
- * Wybiera odpowiednie źródło danych i dostarcza encje CurrencyRate
+ * Wybiera odpowiednie źródło danych i dostarcza z niego encje CurrencyRate
  *
  * Wybrane źródło danych zależy od tego, czy dane które mają zostać uzyskane istnieją, już w bazie danych.
  * Wyższy priorytet jako źródło danych ma baza danych. W przypadku braku możliwości uzyskania danych z bazy, następuje
