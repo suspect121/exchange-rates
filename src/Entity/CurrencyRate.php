@@ -26,7 +26,7 @@ class CurrencyRate
     #[ORM\JoinColumn(nullable: false)]
     private Currency $currency;
 
-    #[ORM\Column(type: Types::FLOAT, precision: 6, scale: 4)]
+    #[ORM\Column(type: Types::FLOAT)]
     private float $exchange_rate;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
