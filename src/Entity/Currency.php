@@ -10,6 +10,7 @@ use App\Repository\CurrencyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
+use Exception;
 
 #[ORM\Entity(repositoryClass: CurrencyRepository::class)]
 class Currency
@@ -26,6 +27,9 @@ class Currency
 
     public function __construct(string $code, string $name)
     {
+        if (strlen($code) !== 3) {
+            throw new Exception('Nieprawidłowy kod waluty "'.$code.'"');
+        }
         $this->id = Uuid::v4();
         $this->code = $code;
         $this->name = $name;

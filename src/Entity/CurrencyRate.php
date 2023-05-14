@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 use DateTimeImmutable;
+use Exception;
 
 #[ORM\Entity(repositoryClass: CurrencyRateRepository::class)]
 #[ORM\Index(columns: ['date'], name: 'date_idx')]
@@ -25,7 +26,7 @@ class CurrencyRate
     #[ORM\JoinColumn(nullable: false)]
     private Currency $currency;
 
-    #[ORM\Column]
+    #[ORM\Column(type: Types::FLOAT, precision: 6, scale: 4)]
     private float $exchange_rate;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
@@ -36,6 +37,9 @@ class CurrencyRate
 
     public function __construct(Currency $currency, float $exchange_rate, DateTimeImmutable $date)
     {
+        if ($exchange_rate <= 0.0) {
+            throw new Exception('Nieprawidłowy kurs wymiany "'.$exchange_rate.'"');
+        }
         $this->id = Uuid::v4();
         $this->currency = $currency;
         $this->exchange_rate = $exchange_rate;
