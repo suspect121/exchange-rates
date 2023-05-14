@@ -30,6 +30,8 @@ when@test:
             autoconfigure: true
         App\Nbp\Api:
             public: true
+        App\ExchangeRate\ExchangeRate:
+            public: true
         App\ExchangeRate\DataSource\NbpApiDataSource:
             public: true
         App\ExchangeRate\CurrencyRateCreator:

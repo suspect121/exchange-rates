@@ -12,6 +12,13 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 trait MockHttpClientTrait
 {
+    private function createEmptyMockHttpClientAndLoadToContainer(): void
+    {
+        $http_client = new MockHttpClient();
+        static::getContainer()
+            ->set(HttpClientInterface::class, $http_client);
+    }
+
     /**
      * Przygotowuje imitację HttpClient a następnie ładuje ją do kontenera zależności
      *
