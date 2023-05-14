@@ -4,8 +4,11 @@
  * Copyright © 2023 Mateusz Paluszek
  */
 
+/** @noinspection PhpUnhandledExceptionInspection */
+
 namespace App\ExchangeRate\DataSource;
 
+use App\ExchangeRate\Exception\DataSourceException;
 use App\Repository\CurrencyRateRepository;
 use DateTimeImmutable;
 
@@ -18,7 +21,9 @@ use DateTimeImmutable;
  */
 class DatabaseDataSource implements DataSourceInterface
 {
-    public function __construct(CurrencyRateRepository $currency_rate_repository)
+    private DateTimeImmutable $date;
+
+    public function __construct(private CurrencyRateRepository $currency_rate_repository)
     {
 
     }
@@ -28,7 +33,7 @@ class DatabaseDataSource implements DataSourceInterface
      */
     public function setDate(DateTimeImmutable $date): void
     {
-
+        $this->date = $date;
     }
 
     /**
@@ -36,6 +41,20 @@ class DatabaseDataSource implements DataSourceInterface
      */
     public function getData(): array
     {
+        $this->checkSetDate();
+        return $this->currency_rate_repository
+            ->findByDateAndLoadRelation($this->date);
+    }
 
+    /**
+     * Sprawdza czy ustawiono datę której mają dotyczyć zwracane kursy walut
+     *
+     * @throws DataSourceException
+     */
+    private function checkSetDate(): void
+    {
+        if (!isset($this->date)) {
+            throw new DataSourceException('Nie przekazano daty której mają dotyczyć zwracane kursy walut');
+        }
     }
 }
