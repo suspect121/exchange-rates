@@ -1,0 +1,60 @@
+.currency-rates {
+    margin: 0 auto;
+    font: 18px/1.5 sans-serif;
+    position: relative;
+    top: -45px;
+}
+
+.currency-rates-archive
+{
+    align-self: end;
+    margin-right: 20px;
+    font-size: 14px;
+}
+
+.currency-rates-archive div {
+    margin-top: 10px;
+}
+
+.currency-rates table {
+    margin-top: 20px;
+}
+
+.currency-rates table tr:first-of-type td {
+    font-weight: bold;
+}
+
+.currency-rates table tr td {
+    padding: 5px 15px;
+}
+
+.currency-rates table tr:hover {
+    background-color: #eaeaea;
+}
+
+.currency-rates > .error-today-no-data
+{
+    color: #ef2727;
+}
+
+.currency-rates > .error-today-no-data div
+{
+    margin-top: 20px;
+    color: black;
+}
+
+.currency-rates > .error-no-data
+{
+    color: #ef2727;
+}
+
+.currency-rates > .error-no-data div
+{
+    margin-top: 20px;
+    color: black;
+}
+
+.currency-rates > .error-unknown
+{
+    color: #ef2727;
+}

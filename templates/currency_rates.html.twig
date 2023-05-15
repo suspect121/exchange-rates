@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Kursy walut{% endblock %}
+{% block assets %}
+    <script src="/assets/libs/jquery-3.7.0.min.js" type="text/javascript"></script>
+    <script src="/assets/js/main.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/assets/css/currency_rates.css">
+{% endblock %}
+
+{% block body %}
+    <div class="currency-rates-archive">
+        Chciałbyś uzyskać archiwalne kursy walut?
+        <br>Wystarczy, że wybierzesz datę.
+        <div>
+            {% set current_year = selected_date|date('Y') %}
+            {% set current_month = selected_date|date('m') %}
+            {% set current_day = selected_date|date('d') %}
+            {% set selected_date_str = selected_date|date('Y-m-d') %}
+            <select id="archive-year">
+                {% for i in 2010..'now'|date('Y') %}
+                    <option{{ i == current_year ? ' selected' }}>{{ i }}</option>
+                {% endfor %}
+            </select>
+            <select id="archive-month">
+                {% for i in 1..12 %}
+                    <option{{ i == current_month ? ' selected' }}>{{ (i < 10 ? '0') ~ i }}</option>
+                {% endfor %}
+            </select>
+            <select id="archive-day">
+                {% for i in 1..31 %}
+                    <option{{ i == current_day ? ' selected' }}>{{ (i < 10 ? '0') ~ i }}</option>
+                {% endfor %}
+            </select>
+            <input type="button" value="Pokaż" id="select-archive">
+        </div>
+    </div>
+    <div class="currency-rates">
+        <h1>Kursy walut w relacji do PLN</h1>
+
+        {% if error == null %}
+            {% if selected_date_str == 'now'|date('Y-m-d') %}
+            Dzisiejsze kursy walut opublikowane przez NBP w tabeli A.
+            {% else %}
+            Kursy walut z dnia {{ selected_date_str }} opublikowane przez NBP w tabeli A.
+            {% endif %}
+
+            <table>
+                <tr>
+                    <td>Nazwa waluty</td>
+                    <td>Kod waluty</td>
+                    <td>Kurs wymiany</td>
+                </tr>
+                {% for currency_rate in currency_rates %}
+                    <tr>
+                        <td>{{ currency_rate.currency_name }}</td>
+                        <td>{{ currency_rate.currency_code }}</td>
+                        <td>{{ currency_rate.exchange_rate }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+
+        {% if error == 'TODAY_NO_DATA' %}
+            <div class="error-today-no-data">
+                Dzisiejsze kursy walut z tabeli A nie zostały jeszcze opublikowane.
+                <br>Publikacja powinna nastąpić między godziną 11:45 a 12:15.
+                <div>
+                    Możesz sprawdzić archiwalne kursy walut.
+                    <br>Wystarczy, że w prawnym górnym rogu strony wybierzesz odpowiednią datę.
+                </div>
+            </div>
+        {% endif %}
+
+        {% if error == 'NO_DATA' %}
+            <div class="error-no-data">
+                W dniu {{ selected_date_str }} nie nastąpiła publikacja kursów walut w tabeli A przez NBP.
+                <div>
+                    Możesz sprawdzić inne archiwalne kursy walut.
+                    <br>Wystarczy, że w prawnym górnym rogu strony wybierzesz odpowiednią datę.
+                </div>
+            </div>
+        {% endif %}
+
+        {% if error == 'UNKNOWN_ERROR' %}
+            <span class="error-unknown">
+                Wystąpił błąd, nie można uzyskać kursów walut. Skontaktuj się z administratorem.
+            </span>
+        {% endif %}
+
+    </div>
+{% endblock %}
